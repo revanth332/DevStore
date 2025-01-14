@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
 import { connectDB } from "@/lib/mongodb";
 import User from '@/models/User';
+import { compare } from 'bcryptjs';
+import { sign } from 'jsonwebtoken';
+
+const JWT_SECRET = process.env.SECRET_KEY || 'secret_key';
 
 export async function POST(request : Request){
     const { email, password } = await request.json();
@@ -11,13 +15,24 @@ export async function POST(request : Request){
         }
     try{
         await connectDB();
-        const user = await User.findOne({email,password});
+        const user = await User.findOne({email});
         if (!user) {
-            return NextResponse.json({message : 'Invalid email or password'}, {
-                status: 401,
+            return NextResponse.json({message : 'user not found'}, {
+                status: 404,
                 });
         }
-        return NextResponse.json({message : "User logged in Successfully",user},{
+
+        const passwordMatch = await compare(password,user.password);
+
+        if(!passwordMatch){
+            return NextResponse.json({message : "Inavlid username or password"},{
+                status : 401
+            })
+        }
+
+        const token = sign({id:user._id},JWT_SECRET,{expiresIn : '1h'});
+
+        return NextResponse.json({message : "User logged in Successfully",token},{
             status : 200
         })
     }

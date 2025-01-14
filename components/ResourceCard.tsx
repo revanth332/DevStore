@@ -39,7 +39,7 @@ export default function ResourceCard({ resource }: { resource: Resource }) {
       <Dialog>
         <DialogTrigger asChild>
           <Image
-            className="mx-auto"
+            className="mx-auto w-1/2"
             width={100}
             height={100}
             alt="resource_image"
@@ -86,7 +86,7 @@ export default function ResourceCard({ resource }: { resource: Resource }) {
                         </button>
                     </PopoverTrigger>
                     <PopoverContent className="py-1 px-0 absolute w-[150px]">
-                        <SaveResource />
+                        <SaveResource resourceId={resource._id} />
                     </PopoverContent>
                 </Popover>
               </p>
@@ -97,7 +97,7 @@ export default function ResourceCard({ resource }: { resource: Resource }) {
       <div>
         <h3 className="font-bold text-center mt-2">
           {resource.name}{" "}
-          <a href={resource.url}>
+          <a className="hidden md:inline" href={resource.url}>
             <Link2Icon className="inline ml-2 text-blue-600" />
           </a>{" "}
         </h3>

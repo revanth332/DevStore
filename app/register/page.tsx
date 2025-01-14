@@ -34,13 +34,7 @@ const ResourceSchema = z.object({
 type Resource = z.infer<typeof ResourceSchema>;
 
 export default function Register() {
-    const {register, handleSubmit, setValue, reset, formState : {errors}} = useForm<Resource>({resolver : zodResolver(ResourceSchema),defaultValues:{
-        name: 'Revanth',
-        email: 'Revanth@gmail.com',
-        experience: 5,
-        password: 'Revanth@321',
-        department: 'Development'
-    }});
+    const {register, handleSubmit, setValue, reset, formState : {errors}} = useForm<Resource>({resolver : zodResolver(ResourceSchema)});
     const router = useRouter()
     const [isSubmiting,setIsSubmiting] = useState(false);
 
@@ -52,6 +46,7 @@ export default function Register() {
             console.log(response.data);
             router.push("/")
             reset();
+            setValue("department",data.department)
         }
         catch(err){
             console.log(err);
@@ -63,10 +58,10 @@ export default function Register() {
 
   return (
     <div className="grid grid-rows-12 h-full">
-        <Nav />
+        <Nav handleSidebarOpen={() => {}} />
         <div className="row-span-11 col-span-12">
             <div className="max-w-2xl h-full mx-auto flex justify-center items-center">
-                <form onSubmit={handleSubmit(onSubmit)} className="border p-5 w-2/3 flex flex-col gap-3 shadow-lg rounded-lg">
+                <form onSubmit={handleSubmit(onSubmit)} className="border p-5 w-[90%] md:w-2/3 flex flex-col gap-3 shadow-lg rounded-lg">
                     <h1 className="font-bold text-2xl text-center">Sign Up</h1>
                     Name :
                     <Input {...register("name")} name="name" type="text" placeholder="Name"/>

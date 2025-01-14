@@ -5,7 +5,7 @@ export default function ResourceCards({resources}:{resources : Resource[] | unde
 
   return (
     <div className="h-full overflow-y-auto p-3">
-        <div className='grid grid-cols-5 max-w-5xl mx-auto gap-y-5'>
+        <div className='grid md:grid-cols-5 grid-cols-3 max-w-5xl mx-auto gap-y-5'>
             {
                 resources?.map((resource,index) => <ResourceCard key={index} resource={resource} />)
             }

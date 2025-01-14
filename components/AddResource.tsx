@@ -41,6 +41,7 @@ export default function AddResource() {
     const router = useRouter();
 
     const onSubmit = async (data : Resource) => {
+        console.log(data)
         setIsLoading(true);
         const user = localStorage.getItem("user");
         if(user){
@@ -63,6 +64,7 @@ export default function AddResource() {
             finally{
                 setIsLoading(false);
                 reset();
+                setValue("category",data.category)
             }
         }
         else{
@@ -95,18 +97,12 @@ export default function AddResource() {
                             {
                                 categoryValues.map((item,index) => <SelectItem key={index} value={item}>{item}</SelectItem>)
                             }
-                            
-                            {/* <SelectItem value="Pictures">Pictures</SelectItem>
-                            <SelectItem value="Animation">Animation</SelectItem>
-                            <SelectItem value="AI Models">AI Models</SelectItem>
-                            <SelectItem value="Image Generation">Image Generation</SelectItem>
-                            <SelectItem value="Video Generation">Video Generation</SelectItem> */}
                         </SelectGroup>
                     </SelectContent>
                 </Select>
                 {errors.category && <p className="text-red-500 text-sm"> {errors.category.message} </p>}
                 {
-                    isLoading ? <Button> <Loader2Icon className="animate-spin" /> Please wait</Button> : <Button>Submit</Button>
+                    isLoading ? <Button> <Loader2Icon className="animate-spin" /> Please wait </Button> : <Button>Submit</Button>
                 }
             </form>
         </div>

@@ -5,7 +5,6 @@ import SearchBox from "@/components/SearchBox";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { CategoryContext } from "../layout";
-import { useDebounce } from "@/hooks/useDebounce";
 import { Loader2Icon } from "lucide-react";
 
 export type Resource = {
@@ -42,7 +41,7 @@ export default function Home() {
     },[category])
 
   return (
-    <section className="grid grid-rows-12 row-span-11 col-start-3 col-end-13">
+    <section className="grid grid-rows-12 row-span-11 md:col-start-3 md:col-end-13 col-span-12 ">
       <div className="row-span-12 flex flex-col gap-5 ">
         <div className="">
           <h1 className="text-3xl mt-5 font-extrabold text-center text-primaryDark">

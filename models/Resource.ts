@@ -18,6 +18,8 @@ const resourceSchema = new Schema<IResource>({
     likes: { type: Number, required: true,default: 0 }
 })
 
+console.log(models)
+
 const ResourceModel = models.ResourceModel || model<IResource>('ResourceModel',resourceSchema);
 
 export default ResourceModel;

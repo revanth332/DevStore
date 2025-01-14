@@ -19,10 +19,7 @@ const ResourceSchema = z.object({
 type Resource = z.infer<typeof ResourceSchema>;
 
 export default function Login() {
-    const {register, handleSubmit, reset, formState : {errors}} = useForm<Resource>({resolver : zodResolver(ResourceSchema),defaultValues:{
-      email:'Revanth@gmail.com',
-      password:'Revanth@321',
-    }})
+    const {register, handleSubmit, reset, formState : {errors}} = useForm<Resource>({resolver : zodResolver(ResourceSchema)})
     const router = useRouter();
     const [isSubmiting,setIsSubmiting] = useState(false);
     
@@ -47,10 +44,10 @@ export default function Login() {
 
   return (
     <div className="h-full grid grid-rows-12">
-        <Nav />
+        <Nav handleSidebarOpen={() => {}} />
         <div className="row-span-11 col-span-12">
           <div className="max-w-2xl h-full mx-auto flex justify-center items-center">
-              <form onSubmit={handleSubmit(onSubmit)} className="border p-5 w-2/3 flex flex-col gap-3 shadow-lg rounded-lg">
+              <form onSubmit={handleSubmit(onSubmit)} className="border p-5 w-[90%] md:w-2/3 flex flex-col gap-3 shadow-lg rounded-lg">
                   <h1 className="font-bold text-2xl text-center">Sign In</h1>
                   Email :
                   <Input {...register("email")} name="email" type="email" placeholder="Email"/>

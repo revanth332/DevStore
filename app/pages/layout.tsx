@@ -31,6 +31,7 @@ export default function PageLayout({children} : {children : React.ReactNode}) {
     const [collectionName,setCollectionName] = useState("All");
     const [sideBarItemsType,setSideBarItemsType] = useState("Category");
     const [collections, setCollecions] = useState<Collection[]>([]);
+    const [isSidebarOpen,setIsSidebarOpen] = useState(true)
     const pathName = usePathname();
 
     const handleCategory = (category : string) => {
@@ -38,6 +39,10 @@ export default function PageLayout({children} : {children : React.ReactNode}) {
     }
     const handleCollectionName = (collection : string) => {
         setCollectionName(collection);
+    }
+    
+    const handleSidebarOpen = () => {
+        setIsSidebarOpen(prev => !prev)
     }
 
     useEffect(() => {
@@ -51,7 +56,7 @@ export default function PageLayout({children} : {children : React.ReactNode}) {
             const fetchCollections = async () => {
                 const userId = JSON.parse(user)._id;
                 try{
-                    const response = await axios.get("/api/packs/"+userId);
+                    const response = await axios.get("/api/user/"+userId+"/packs");
                     setCollecions(response.data.packs);
                 }
                 catch(err){
@@ -66,8 +71,8 @@ export default function PageLayout({children} : {children : React.ReactNode}) {
   return (
     <div className="h-full grid grid-cols-12 grid-rows-12">
         <CategoryContext.Provider value={{category,handleCategory,collectionName,handleCollectionName,sideBarItemsType,setSideBarItemsType,collections}}>
-            <Nav />
-            <Sidebar />
+            <Nav handleSidebarOpen={handleSidebarOpen} />
+            <Sidebar isSidebarOpen={isSidebarOpen} handleSidebarOpen={handleSidebarOpen} />
             {children}
         </CategoryContext.Provider>
     </div>
