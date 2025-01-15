@@ -3,7 +3,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { useState, useEffect, useContext } from "react"
-import { MenuIcon, PlusIcon } from "lucide-react"
+import { Loader2Icon, MenuIcon, PlusIcon } from "lucide-react"
 import { useRouter, usePathname } from "next/navigation"
 import {
     Dialog,
@@ -14,6 +14,8 @@ import {
 import AddResource from "./AddResource"
 import { CategoryContext } from "@/app/pages/layout"
 import CreateCollection from "./CreateCollection"
+import axios from "axios"
+import { toast } from "@/hooks/use-toast"
 
 export default function Nav({handleSidebarOpen}:{handleSidebarOpen : () => void}) {
     const [toggleDropdown, setToggleDropdown] = useState<Boolean>(false);
@@ -21,17 +23,38 @@ export default function Nav({handleSidebarOpen}:{handleSidebarOpen : () => void}
     const router = useRouter();
     const { setSideBarItemsType, sideBarItemsType } = useContext(CategoryContext);
     const pathname = usePathname();
+    const [isLoading,setIsLoading] = useState<Boolean>(false);
 
     const handleToggleDropdown = () => {
         setToggleDropdown(prev => !prev)
     }
 
+    const handleLogout = async () => {
+        setIsLoading(true);
+        try{
+            await axios.get("/api/auth/logout");
+            setIsLogin(false);
+            router.push('/')
+        }
+        catch(err){
+            toast({
+                title: "Error during signout",
+                variant:"destructive"
+            })
+        }
+        finally{
+            setIsLoading(false);
+        }
+    }
+
     useEffect(() => {
-        const user = localStorage.getItem("user");
-        if (user) {
+        console.log(pathname)
+        if(pathname.includes("/pages")){
+            console.log(pathname)
             setIsLogin(true);
         }
     }, [])
+
 
     return (
         <div className="p-3 flex justify-between items-center row-span-1 col-span-12 ">
@@ -84,12 +107,10 @@ export default function Nav({handleSidebarOpen}:{handleSidebarOpen : () => void}
 
                         }
 
-                        <button onClick={() => {
-                            setIsLogin(false);
-                            localStorage.removeItem("user");
-                            router.push('/')
-                        }} className="ml-2 border bg-gray-200 hover:bg-gray-300 rounded-full px-3 py-1 text-sm text">
-                            Sign Out
+                        <button onClick={() => handleLogout()} className="ml-2 border bg-gray-200 hover:bg-gray-300 rounded-full px-3 py-1 text-sm text-center">
+                            {
+                                isLoading ? <Loader2Icon className="animate-spin mx-auto" /> :  "Sign Out"
+                            }
                         </button>
                         <img className="ml-2" src="https://avatar.iran.liara.run/public" alt="logo" width={30} height={30} onClick={() => handleToggleDropdown()} />
 
@@ -155,12 +176,10 @@ export default function Nav({handleSidebarOpen}:{handleSidebarOpen : () => void}
                                             </>
                                         }
                                         
-                                        <button onClick={() => {
-                                            setIsLogin(false);
-                                            localStorage.removeItem("user");
-                                            router.push('/')
-                                        }} className="text-primaryDark font-bold border-t p-2 text-sm text w-[150px]">
-                                            Sign Out
+                                        <button onClick={() => handleLogout()} className="text-primaryDark font-bold border-t p-2 text-sm text w-[150px] text-center">
+                                        {
+                                            isLoading ? <Loader2Icon className="animate-spin mx-auto" /> :  "Sign Out"
+                                        }
                                         </button>
                                     </div>
                                 )

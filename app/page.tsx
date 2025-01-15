@@ -30,7 +30,6 @@ export default function Login() {
       try{
           const response = await axios.post("/api/auth/login",data);
           console.log(response.data);
-          localStorage.setItem("user",JSON.stringify(response.data.user));
           router.push("pages/home")
           reset();
       }

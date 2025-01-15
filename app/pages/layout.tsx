@@ -35,6 +35,7 @@ export default function PageLayout({children} : {children : React.ReactNode}) {
     const pathName = usePathname();
 
     const handleCategory = (category : string) => {
+        setIsSidebarOpen(false);
         setCategory(category);
     }
     const handleCollectionName = (collection : string) => {

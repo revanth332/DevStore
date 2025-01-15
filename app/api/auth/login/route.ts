@@ -3,6 +3,7 @@ import { connectDB } from "@/lib/mongodb";
 import User from '@/models/User';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
+import { cookies } from 'next/headers';
 
 const JWT_SECRET = process.env.SECRET_KEY || 'secret_key';
 
@@ -30,9 +31,16 @@ export async function POST(request : Request){
             })
         }
 
-        const token = sign({id:user._id},JWT_SECRET,{expiresIn : '1h'});
+        const expiresAt = new Date((Date.now() * 7 * 24 * 60 * 60 * 1000));
+        const session = sign({id:user._id,expiresAt},JWT_SECRET,{expiresIn : '1h'});
 
-        return NextResponse.json({message : "User logged in Successfully",token},{
+        (await cookies()).set("session",session,{
+            httpOnly : true,
+            secure : true,
+            expires:expiresAt
+        })
+
+        return NextResponse.json({message : "User logged in Successfully",userData:{_id:user._id}},{
             status : 200
         })
     }
