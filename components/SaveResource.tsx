@@ -1,4 +1,5 @@
 import { CategoryContext } from "@/app/pages/layout"
+import { toast } from "@/hooks/use-toast";
 import axios from "axios";
 import { useContext } from "react"
 
@@ -8,6 +9,9 @@ export default function SaveResource({resourceId}:{resourceId : string}) {
   const handleSavingResource = async (e : React.MouseEvent<HTMLButtonElement>) => {
       try{
         await axios.post("/api/packs/add-resource",{resourceId,collectionId : e.currentTarget.id});
+        toast({
+          title:"Resource added successfully"
+        })
       }
       catch(err){
         console.log(err);

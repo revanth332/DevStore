@@ -35,7 +35,7 @@ export default function PageLayout({children} : {children : React.ReactNode}) {
     const pathName = usePathname();
 
     const handleCategory = (category : string) => {
-        setIsSidebarOpen(false);
+        if(window.innerWidth <= 768) setIsSidebarOpen(false);
         setCategory(category);
     }
     const handleCollectionName = (collection : string) => {
@@ -51,11 +51,11 @@ export default function PageLayout({children} : {children : React.ReactNode}) {
         // const fetchCollections = 
         const user = localStorage.getItem("user");
         if(!pathName.includes("home")){
-            setSideBarItemsType("Collections")
+            setSideBarItemsType("Collections");
         }
         if(user){
             const fetchCollections = async () => {
-                const userId = JSON.parse(user)._id;
+                const userId = user;
                 try{
                     const response = await axios.get("/api/user/"+userId+"/packs");
                     setCollecions(response.data.packs);

@@ -45,7 +45,7 @@ export default function AddResource() {
         setIsLoading(true);
         const user = localStorage.getItem("user");
         if(user){
-            const userId = JSON.parse(user)._id;
+            const userId = user;
             try{
                 const response = await axios.post("../api/resources/add",{...data,userId : userId});
                 console.log(response.data);

@@ -85,7 +85,7 @@ export default function ResourceCard({ resource }: { resource: Resource }) {
                             Save
                         </button>
                     </PopoverTrigger>
-                    <PopoverContent className="py-1 px-0 absolute w-[150px]">
+                    <PopoverContent className="py-1 px-0 w-[150px] bg-white border">
                         <SaveResource resourceId={resource._id} />
                     </PopoverContent>
                 </Popover>
