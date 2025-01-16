@@ -25,12 +25,14 @@ export default function ResourceCard({ resource }: { resource: Resource }) {
   const [likedCount,setLikedCount] = useState<number>(resource.likes)
 
   const handleLike = async () => {
-    try {
-      const response = await axios.get("/api/resources/like/"+resource._id);
-      setIsLiked(true);
-      setLikedCount(response.data.likes)
-    } catch (err) {
-      console.log(err);
+    if(!isLiked){
+      try {
+        const response = await axios.get("/api/resources/like/"+resource._id);
+        setIsLiked(true);
+        setLikedCount(response.data.likes)
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 

@@ -4,7 +4,7 @@ import ResourceCards from "@/components/ResourceCards";
 import SearchBox from "@/components/SearchBox";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { CategoryContext } from "../layout";
+import { CategoryContext } from "@/context/CategoryContext";
 import { Loader2Icon } from "lucide-react";
 
 export type Resource = {
@@ -60,8 +60,6 @@ export default function Home() {
           <Loader2Icon className="animate-spin text-gray-500 h-12 w-12" />
         </div> : <ResourceCards resources={filteredResources} />
         }
-        
-        
       </div>
 
     </section>

@@ -12,7 +12,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import AddResource from "./AddResource"
-import { CategoryContext } from "@/app/pages/layout"
+import { CategoryContext } from "@/context/CategoryContext"
 import CreateCollection from "./CreateCollection"
 import axios from "axios"
 import { toast } from "@/hooks/use-toast"

@@ -24,16 +24,19 @@ export async function middleware(request: NextRequest) {
     const isPublicRoute = publicRoutes.includes(path);
     const isProtectedRoute = privateRoutes.includes(path);
     const session = await decrypt(cookie);
+
     if(isProtectedRoute && !session?.id){
         return NextResponse.redirect(new URL('/', request.nextUrl));
     }
     if(isPublicRoute && session?.id){
         return NextResponse.redirect(new URL('/pages/home', request.nextUrl));
     }
+
     if(path.includes("/api") && !publicRoutes.includes(path)){
         if(!session?.id){
             return NextResponse.json({message : "Unauthorized access"},{status : 403});
         }
     }
+    
     return NextResponse.next();
 }

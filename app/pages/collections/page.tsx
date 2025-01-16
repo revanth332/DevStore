@@ -1,7 +1,7 @@
 "use client"
 
 import { useContext } from 'react'
-import { CategoryContext } from '../layout'
+import { CategoryContext } from '@/context/CategoryContext';
 import Link from 'next/link';
 import Image from 'next/image';
 

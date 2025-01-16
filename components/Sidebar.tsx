@@ -1,6 +1,6 @@
 "use client"
 
-import { CategoryContext } from '@/app/pages/layout';
+import { CategoryContext } from '@/context/CategoryContext';
 import { PanelLeftClose,Search } from 'lucide-react';
 import { useContext, useState } from 'react';
 import { usePathname,useRouter } from "next/navigation";
