@@ -21,7 +21,7 @@ export default function Nav({handleSidebarOpen}:{handleSidebarOpen : () => void}
     const [toggleDropdown, setToggleDropdown] = useState<Boolean>(false);
     const [isLogin, setIsLogin] = useState(false);
     const router = useRouter();
-    const { setSideBarItemsType, sideBarItemsType } = useContext(CategoryContext);
+    const { setSideBarItemsType, sideBarItemsType,openCreateCollectionDialogue,handleOpenCreateCollectionDialogue } = useContext(CategoryContext);
     const pathname = usePathname();
     const [isLoading,setIsLoading] = useState<Boolean>(false);
 
@@ -70,21 +70,20 @@ export default function Nav({handleSidebarOpen}:{handleSidebarOpen : () => void}
 
             {/* Desktop navigation */}
             <div className="md:flex hidden">
+            <Dialog open={openCreateCollectionDialogue} onOpenChange={handleOpenCreateCollectionDialogue}>
+                <DialogContent>
+                    <DialogTitle >Add Collection</DialogTitle>
+                    <CreateCollection />
+                </DialogContent>
+            </Dialog>
                 {isLogin ? (
                     <div className="flex">
                         {
                             pathname.includes("collections")
                                 ?
                                 <>
-                                    <Dialog>
-                                        <DialogTrigger asChild>
-                                            <button className="border flex items-center bg-black text-white rounded-full py-1 px-3 text-sm"> <PlusIcon className="h-5 w-5 mr-1" /> Add Collection</button>
-                                        </DialogTrigger>
-                                        <DialogContent>
-                                            <DialogTitle >Add Collection</DialogTitle>
-                                            <CreateCollection />
-                                        </DialogContent>
-                                    </Dialog>
+                                <button onClick={handleOpenCreateCollectionDialogue} className="border flex items-center bg-black text-white rounded-full py-1 px-3 text-sm"> <PlusIcon className="h-5 w-5 mr-1" /> Add Collection</button>
+    
                                     <Link href="/pages/home" className="ml-2 border bg-gray-200 hover:bg-gray-300 rounded-full px-3 py-1 text-sm text">
                                         Resources
                                     </Link>
@@ -147,7 +146,7 @@ export default function Nav({handleSidebarOpen}:{handleSidebarOpen : () => void}
                                                 <Link className="p-1 hover:bg-gray-200 w-full text-right" href="/pages/home">
                                                     Resources
                                                 </Link>
-                                                <Dialog>
+                                                <Dialog open={openCreateCollectionDialogue}>
                                                     <DialogTrigger asChild>
                                                         <button className="flex items-center justify-end text-black p-1 text-sm hover:bg-gray-200 w-full"> <PlusIcon className="h-4 w-4" /> Add Collection</button>
                                                     </DialogTrigger>

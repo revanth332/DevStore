@@ -19,6 +19,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from "react";
 import { Loader2Icon } from "lucide-react";
 import Nav from "@/components/Nav";
+import { toast } from "@/hooks/use-toast";
 
 const department = z.enum(["Development", "Marketing", "Sales","HR","IT","Healthcare"])
 type Category = z.infer<typeof department>;
@@ -43,13 +44,20 @@ export default function Register() {
         setIsSubmiting(true);
         try{
             const response = await axios.post("/api/auth/register",data);
-            console.log(response.data);
+            // console.log(response.data);
+            toast({
+                title:"User registered successfully"
+            })
             router.push("/")
             reset();
             setValue("department",data.department)
         }
         catch(err){
             console.log(err);
+            toast({
+                title:"User registration failed",
+                variant:"destructive"
+            })
         }
         finally{
             setIsSubmiting(false);

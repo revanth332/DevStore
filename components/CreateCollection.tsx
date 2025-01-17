@@ -1,21 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import axios from "axios";
 import { toast } from "@/hooks/use-toast";
 import { Loader2Icon } from "lucide-react";
+import { CategoryContext } from "@/context/CategoryContext";
 
 export default function CreateCollection() {
   const [name, setName] = useState<string>("");
   const [isLoading, setIsloading] = useState(false);
+  const {handleCollections} = useContext(CategoryContext)
+
 
   const handleCollectionCreation = async () => {
     const user = localStorage.getItem("user");
     if (user) {
       const userId = user;
-      console.log(userId)
+    //   console.log(userId)
       setIsloading(true);
       try {
         const response = await axios.post("../api/packs/create", {
@@ -23,6 +26,10 @@ export default function CreateCollection() {
           userId,
         });
         console.log(response);
+        handleCollections(response.data.newCollection)
+        toast({
+            title:"Collection created successfully"
+        })
         setName("");
       } catch (err) {
         console.log(err);
@@ -43,6 +50,7 @@ export default function CreateCollection() {
         className="mr-2"
         name="name"
         type="text"
+        value={name}
       />
       <Button onClick={handleCollectionCreation}>
         {

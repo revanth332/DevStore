@@ -1,16 +1,25 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import ResourceCards from "@/components/ResourceCards";
 import { usePathname } from "next/navigation";
 import { Resource } from "../../home/page";
 import axios from "axios";
 import { Loader2Icon } from "lucide-react";
+import { CategoryContext } from "@/context/CategoryContext";
 
 export default function page() {
     const pathname = usePathname();
     const [resources,setResources] = useState<Resource[]>();
     const [isLoading,setIsLoading] = useState<Boolean>(false);
+    const {collectionCategoryName} = useContext(CategoryContext);
+
+    const filteredResources = resources?.filter(item => {
+      if(collectionCategoryName === "All") return true;
+      else{
+        if(item.category === collectionCategoryName) return true;
+      }
+    })
     
     useEffect(() => {
       const fetchResources = async () => {
@@ -41,10 +50,10 @@ export default function page() {
           <Loader2Icon className="animate-spin text-gray-500 h-12 w-12" />
         </div>
         :
-        resources && resources.length > 0
+        filteredResources && filteredResources.length > 0
         ?
         <div className="row-span-12 flex flex-col gap-5">
-          <ResourceCards resources={resources} />
+          <ResourceCards resources={filteredResources} />
         </div>
         :
         <div className="text-3xl text-gray-600 font-semibold row-span-12 flex justify-center items-center">

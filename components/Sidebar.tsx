@@ -4,6 +4,7 @@ import { CategoryContext } from '@/context/CategoryContext';
 import { PanelLeftClose,Search } from 'lucide-react';
 import { useContext, useState } from 'react';
 import { usePathname,useRouter } from "next/navigation";
+import CollectionCategories from './CollectionCategories';
 
 export const categoryValues = ["Icons", "Pictures", "Animation","AI Models","Website Generators","Image Generators","Video Generators"] as const;
 
@@ -14,7 +15,7 @@ export default function Sidebar({isSidebarOpen,handleSidebarOpen}:{isSidebarOpen
     const router = useRouter();
 
   return (
-    <div className={`col-span-2 row-span-12 bg-slate-50 pt-5 px-3 text-gray-700 absolute md:static w-[200px] h-full md:grid grid-rows-12 transition-all duration-300 ${!isSidebarOpen ? '-translate-x-full' : ''}`}>
+    <div className={`md:col-span-2 row-span-12 bg-slate-50  pt-5 px-3 text-gray-700 absolute md:static z-50 w-[250px] md:w-full h-full md:grid grid-rows-12 transition-all duration-300 ${!isSidebarOpen ? '-translate-x-full' : ''}`}>
         <div className='flex mb-5 md:mb-0 justify-between row-span-1 md:hidden'>
             <PanelLeftClose  onClick={() => handleSidebarOpen()} />
             {/* <Search /> */}
@@ -44,10 +45,7 @@ export default function Sidebar({isSidebarOpen,handleSidebarOpen}:{isSidebarOpen
                     {
                         collections.map((item,index) => {
                             return (
-                                <button key={index} onClick={() => {
-                                    handleCollectionName(item.name);
-                                    router.push("/pages/collections/"+item._id)
-                                }} className={`p-2 rounded-lg text-left ${collectionName === item.name && 'bg-gray-300'}`}>{item.name}</button>
+                                <CollectionCategories key={index} collection={item} />
                             )
                         })
                     }

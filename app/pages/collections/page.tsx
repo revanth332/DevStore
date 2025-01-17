@@ -12,7 +12,7 @@ export default function page() {
         {
         collections.length > 0 ? 
             <div className="row-span-12 overflow-y-auto p-3">
-                <div className='grid grid-cols-5 mx-auto gap-y-5'>
+                <div className='grid grid-cols-3 md:grid-cols-5 mx-auto gap-y-5'>
                     
                     {collections.map((collection) => (
                         <Link key={collection._id} onClick={() => handleCollectionName(collection.name)} href={"/pages/collections/"+collection._id} className="flex flex-col gap-2 items-center hover:bg-gray-50 cursor-pointer rounded-lg">

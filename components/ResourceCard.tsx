@@ -11,23 +11,32 @@ import {
 } from "@/components/ui/dialog";
 import { Resource } from "@/app/pages/home/page";
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
   } from "@/components/ui/popover"
 import SaveResource from "./SaveResource";
+import { CategoryContext } from "@/context/CategoryContext";
   
 
 export default function ResourceCard({ resource }: { resource: Resource }) {
   const [isLiked, setIsLiked] = useState<Boolean>(false);
-  const [likedCount,setLikedCount] = useState<number>(resource.likes)
+  const [likedCount,setLikedCount] = useState<number>(resource.likedBy.length)
+  const [openCollectionsDialogue,setOpenCollectionDialogue] = useState<boolean>(false);
+  const {handleOpenCreateCollectionDialogue} = useContext(CategoryContext)
+
+  const handleCollectionDialogue = () => {
+    handleOpenCreateCollectionDialogue();
+    setOpenCollectionDialogue(prev => !prev);
+  }
 
   const handleLike = async () => {
+    const userId = localStorage.getItem("user");
     if(!isLiked){
       try {
-        const response = await axios.get("/api/resources/like/"+resource._id);
+        const response = await axios.post("/api/resources/like/"+resource._id,{userId : userId});
         setIsLiked(true);
         setLikedCount(response.data.likes)
       } catch (err) {
@@ -36,9 +45,16 @@ export default function ResourceCard({ resource }: { resource: Resource }) {
     }
   };
 
+  useEffect(() => {
+    const userId = localStorage.getItem("user");
+    if(userId){
+      setIsLiked(resource.likedBy.includes(userId));
+    }
+  },[])
+
   return (
     <div className="flex flex-col">
-      <Dialog>
+      <Dialog open={openCollectionsDialogue} onOpenChange={setOpenCollectionDialogue}>
         <DialogTrigger asChild>
           <Image
             className="mx-auto w-1/2"
@@ -88,7 +104,7 @@ export default function ResourceCard({ resource }: { resource: Resource }) {
                         </button>
                     </PopoverTrigger>
                     <PopoverContent className="py-1 px-0 w-[150px] bg-white border">
-                        <SaveResource resourceId={resource._id} />
+                        <SaveResource handleCollectionDialogue={handleCollectionDialogue} resourceCategory={resource.category} resourceId={resource._id} />
                     </PopoverContent>
                 </Popover>
               </p>

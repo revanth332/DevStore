@@ -13,7 +13,8 @@ export type Resource = {
     description: string,
     _id :string,
     category : string,
-    likes : number
+    likes : number,
+    likedBy : string[]
 }
 
 export default function Home() {

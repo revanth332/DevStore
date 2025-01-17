@@ -7,10 +7,15 @@ export type CategoryContextType = {
   category: string;
   handleCategory: (category: string) => void;
   collectionName: string;
-  handleCollectionName: (collection: string) => void;
+  handleCollectionName: (newCollectionName: string) => void;
   sideBarItemsType: string;
   setSideBarItemsType: (type: string) => void;
   collections: Collection[];
+  handleCollections : (newCollection : Collection) => void;
+  collectionCategoryName : string;
+  handlCollectioncategoryName : (newCollectionCategoryName : string) => void;
+  openCreateCollectionDialogue : boolean;
+  handleOpenCreateCollectionDialogue : () => void;
 };
 
 export type Collection = {
@@ -18,6 +23,7 @@ export type Collection = {
   name: string;
   users: string[];
   resources: Resource[];
+  categories : string[];
 };
 
 export const CategoryContext = createContext<CategoryContextType>({
@@ -28,14 +34,21 @@ export const CategoryContext = createContext<CategoryContextType>({
   sideBarItemsType: "",
   setSideBarItemsType: () => {},
   collections: [],
+  handleCollections : () => {},
+  collectionCategoryName : "",
+  handlCollectioncategoryName : () => {},
+  openCreateCollectionDialogue : false,
+  handleOpenCreateCollectionDialogue : () => {}
 });
 
 export function CategoryProvider({ children }: { children: React.ReactNode }) {
-  const [category, setCategory] = useState("All");
-  const [collectionName, setCollectionName] = useState("All");
-  const [sideBarItemsType, setSideBarItemsType] = useState("Category");
-  const [collections, setCollecions] = useState<Collection[]>([]);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [category, setCategory] = useState<string>("All");
+  const [collectionName, setCollectionName] = useState<string>("All");
+  const [sideBarItemsType, setSideBarItemsType] = useState<string>("Category");
+  const [collections, setCollections] = useState<Collection[]>([]);
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
+  const [collectionCategoryName,setCollectionCategoryName] = useState<string>("All");
+  const [openCreateCollectionDialogue,setOpenCreateCollectionDialogue] = useState<boolean>(false);
   const pathName = usePathname();
 
   const handleCategory = (category: string) => {
@@ -46,6 +59,18 @@ export function CategoryProvider({ children }: { children: React.ReactNode }) {
   const handleCollectionName = (collection: string) => {
     setCollectionName(collection);
   };
+
+  const handleCollections = (collection : Collection) => {
+    setCollections(prevCollections => [...prevCollections, collection]);
+  }
+
+  const handlCollectioncategoryName = (newCollectionCategoryName : string) => {
+    setCollectionCategoryName(newCollectionCategoryName)
+  }
+
+  const handleOpenCreateCollectionDialogue = () => {
+    setOpenCreateCollectionDialogue(prev => !prev)
+  }
 
   const handleSidebarOpen = () => {
     setIsSidebarOpen((prev) => !prev);
@@ -61,7 +86,7 @@ export function CategoryProvider({ children }: { children: React.ReactNode }) {
         const userId = user;
         try {
           const response = await axios.get(`/api/user/${userId}/packs`);
-          setCollecions(response.data.packs);
+          setCollections(response.data.packs);
         } catch (err) {
           console.log(err);
         }
@@ -80,6 +105,11 @@ export function CategoryProvider({ children }: { children: React.ReactNode }) {
         sideBarItemsType,
         setSideBarItemsType,
         collections,
+        handleCollections,
+        handlCollectioncategoryName,
+        collectionCategoryName,
+        openCreateCollectionDialogue,
+        handleOpenCreateCollectionDialogue
       }}
     >
       {children}

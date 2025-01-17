@@ -6,7 +6,7 @@ export interface IResource extends Document {
     description: string,
     url: string,
     category : string,
-    likes : number
+    likedBy : string[]
 }
 
 const resourceSchema = new Schema<IResource>({
@@ -15,7 +15,7 @@ const resourceSchema = new Schema<IResource>({
     description: { type: String, required: true },
     url: { type: String, required: true, unique : true },
     category: { type: String, required: true },
-    likes: { type: Number, required: true,default: 0 }
+    likedBy : [{ type: Schema.Types.ObjectId, ref: 'User' }]
 })
 
 console.log(models)

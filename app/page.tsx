@@ -10,6 +10,7 @@ import { useState } from "react";
 import axios from "axios";
 import { Loader2Icon } from "lucide-react";
 import Nav from "@/components/Nav";
+import { toast } from "@/hooks/use-toast";
 
 const ResourceSchema = z.object({
     email: z.string().min(5, 'Email must be at least 5 characters'),
@@ -22,20 +23,26 @@ export default function Login() {
     const {register, handleSubmit, reset, formState : {errors}} = useForm<Resource>({resolver : zodResolver(ResourceSchema)})
     const router = useRouter();
     const [isSubmiting,setIsSubmiting] = useState(false);
-    
 
     const onSubmit = async (data : Resource) => {
       console.log(data);
       setIsSubmiting(true);
       try{
           const response = await axios.post("/api/auth/login",data);
-          console.log(response.data);
+          // console.log(response.data);
+          toast({
+            title:"User logged in successfully"
+          });
           localStorage.setItem("user",response.data.userData._id)
           router.push("pages/home")
           reset();
       }
       catch(err){
           console.log(err);
+          toast({
+            title:"User login failed",
+            variant:"destructive"
+          })
       }
       finally{
           setIsSubmiting(false);
