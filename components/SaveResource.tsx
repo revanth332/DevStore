@@ -29,9 +29,12 @@ export default function SaveResource({resourceId,resourceCategory,handleCollecti
   return (
     <div className="h-full rounded-lg">
         <h2 className="text-lg px-2 font-bold">Collections</h2>
+        <div className="max-h-[150px] overflow-auto">
         {
           collections.map(collection => <button onClick={handleSavingResource} key={collection._id} id={collection._id} className="p-2 w-full text-left hover:bg-gray-200">{collection.name}</button>)
         }
+        </div>
+
         <button onClick={handleCollectionDialogue} className="border flex items-center bg-gray-100 text-black rounded-full py-1 px-3 text-sm mx-auto mt-2 mb-1"> <PlusIcon className="h-5 w-5 mr-1" /> Add Collection</button>
     </div>
   )

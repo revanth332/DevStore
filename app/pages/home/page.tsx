@@ -37,6 +37,9 @@ export default function Home() {
         catch(err){
           console.error(err);
         }
+        finally{
+          setIsLoading(false)
+        }
       }
       fetchResources();
     },[category])

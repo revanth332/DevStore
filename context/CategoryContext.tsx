@@ -46,13 +46,11 @@ export function CategoryProvider({ children }: { children: React.ReactNode }) {
   const [collectionName, setCollectionName] = useState<string>("All");
   const [sideBarItemsType, setSideBarItemsType] = useState<string>("Category");
   const [collections, setCollections] = useState<Collection[]>([]);
-  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
   const [collectionCategoryName,setCollectionCategoryName] = useState<string>("All");
   const [openCreateCollectionDialogue,setOpenCreateCollectionDialogue] = useState<boolean>(false);
   const pathName = usePathname();
 
   const handleCategory = (category: string) => {
-    if (window.innerWidth <= 768) setIsSidebarOpen(false);
     setCategory(category);
   };
 
@@ -71,10 +69,6 @@ export function CategoryProvider({ children }: { children: React.ReactNode }) {
   const handleOpenCreateCollectionDialogue = () => {
     setOpenCreateCollectionDialogue(prev => !prev)
   }
-
-  const handleSidebarOpen = () => {
-    setIsSidebarOpen((prev) => !prev);
-  };
 
   useEffect(() => {
     const user = localStorage.getItem("user");

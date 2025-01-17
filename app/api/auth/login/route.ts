@@ -32,7 +32,7 @@ export async function POST(request : Request){
         }
 
         const expiresAt = new Date((Date.now() * 7 * 24 * 60 * 60 * 1000));
-        const session = sign({id:user._id,expiresAt},JWT_SECRET,{expiresIn : '1h'});
+        const session = sign({id:user._id,expiresAt},JWT_SECRET,{expiresIn : '24h'});
 
         (await cookies()).set("session",session,{
             httpOnly : true,
